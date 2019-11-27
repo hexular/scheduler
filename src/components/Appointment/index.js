@@ -4,6 +4,7 @@ import Header from "components/Appointment/Header";
 import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Form from "components/Appointment/Form";
+import Error from "components/Appointment/Error";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
 import useVisualMode from "../../hooks/useVisualMode"
@@ -86,15 +87,23 @@ const { mode, transition, back } = useVisualMode(
         )}
 
         {mode === SAVING && (
-          <Status message={'Saving interview'}/>
+          <Status message={'Saving interview'} />
         )}
 
         {mode === DELETING && (
-          <Status message={'Cancelling interview'}/>
+          <Status message={'Cancelling interview'} />
         )}
        
         {mode === CONFIRM && (
-          <Confirm onCancel={back} onConfirm={trash} message={"Press confirm to remove this interview"}/>
+          <Confirm onCancel={back} onConfirm={trash} message={"Press confirm to remove this interview"}/ >
+        )}
+
+        {mode === ERROR_DELETE && (
+          <Error message={'Could not cancel appointment'} onClose={back} />
+        )}
+
+        {mode === ERROR_SAVE && (
+          <Error message={'Could not book appointment'} onClose={back} />
         )}
         
     </article>
