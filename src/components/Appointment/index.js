@@ -29,7 +29,12 @@ function save(name, interviewer) {
 }
 
 function trash() {
-  console.log('trashed')
+  transition(DELETING);
+  // props.
+}
+
+function cancel() {
+  transition(CONFIRM)
 }
 
 const { mode, transition, back } = useVisualMode(
@@ -46,7 +51,7 @@ const { mode, transition, back } = useVisualMode(
           <Show
             student={props.interview.student}
             interviewer={props.interview.interviewer}
-            onDelete={() => transition(CONFIRM)}
+            onDelete={cancel}
           />
         )}
 
@@ -59,12 +64,17 @@ const { mode, transition, back } = useVisualMode(
         }
 
         {mode === SAVING && (
-          <Status message={'Saving'}/>
+          <Status message={'Saving interview'}/>
+        )}
+
+        {mode === DELETING && (
+          <Status message={'Cancelling interview'}/>
         )}
        
         {mode === CONFIRM && (
-          <Confirm onCancel={back()} onConfirm={trash()} message={"Are you sure you want to cancel the interview?"}/>
+          <Confirm onCancel={back} onConfirm={trash} message={"Are you sure you want to cancel the interview?"}/>
         )}
+        
         
     </article>
   );
