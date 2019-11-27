@@ -1,20 +1,17 @@
-function TweetList(props) {
-  const tweets = props.tweets.map(tweet => {
+import React from "react";
+import DayListItem from "components/DayListItem";
+
+export default function DayList(props) {
+  const days = props.days.map(day => {
     return (
-      <Tweet
-        key={tweet.id}
-        name={tweet.name}
-        avatar={tweet.avatar}
-        content={tweet.content}
-        date={tweet.date}
-      />
+      <DayListItem 
+      key={day.id}
+          name={day.name} 
+          spots={day.spots} 
+          selected={day.name === props.day}
+          setDay={props.setDay}
+        />
     );
   });
-
-  return tweets;
+  return days;
 }
-
-ReactDOM.render(
-  <TweetList tweets={tweets} />,
-  document.getElementById("root")
-); 
