@@ -29,8 +29,9 @@ function save(name, interviewer) {
 }
 
 function trash() {
-  transition(DELETING);
-  // props.
+  transition(DELETING, true);
+  props.cancelInterview(props.id)
+    .then(() => transition(EMPTY));
 }
 
 function cancel() {
@@ -72,7 +73,7 @@ const { mode, transition, back } = useVisualMode(
         )}
        
         {mode === CONFIRM && (
-          <Confirm onCancel={back} onConfirm={trash} message={"Are you sure you want to cancel the interview?"}/>
+          <Confirm onCancel={back} onConfirm={trash} message={"Press confirm to remove this interview"}/>
         )}
         
         
