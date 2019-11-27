@@ -20,6 +20,14 @@ export default function Application() {
 
   function bookInterview(id, interview) {
     console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
   }
   
   const setDay = day => setState({ ...state, day });
