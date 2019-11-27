@@ -33,6 +33,7 @@ export default function Application() {
 
   async function cancelInterview(id) {
     await axios.delete(`/api/appointments/${id}`)
+      .then(() => setState({...state}))
   }
   
   const setDay = day => setState({ ...state, day });
