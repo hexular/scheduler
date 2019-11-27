@@ -17,6 +17,7 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 const DELETING = "DELETING";
 const CONFIRM = 'CONFIRM';
+const EDIT = 'EDIT';
 
 function save(name, interviewer) {
   const interview = {
@@ -38,6 +39,10 @@ function cancel() {
   transition(CONFIRM)
 }
 
+function edit() {
+  transition(EDIT)
+}
+
 const { mode, transition, back } = useVisualMode(
   props.interview ? SHOW : EMPTY
 )
@@ -53,16 +58,29 @@ const { mode, transition, back } = useVisualMode(
             student={props.interview.student}
             interviewer={props.interview.interviewer}
             onDelete={cancel}
+            onEdit={edit}
           />
         )}
 
         {mode === CREATE && (
           <Form 
+            // name={props.interview.student}
             interviewers={props.interviewers}
+            // interviewer={props.interview.interviewer}
             onCancel={back}
             onSave={save}
           />)
         }
+
+        {mode === EDIT && (
+          <Form 
+          name={props.interview.student}
+          interviewers={props.interviewers}
+          interviewer={props.interview.interviewer.id}
+          onCancel={back}
+          onSave={save}
+          />
+        )}
 
         {mode === SAVING && (
           <Status message={'Saving interview'}/>
@@ -75,7 +93,6 @@ const { mode, transition, back } = useVisualMode(
         {mode === CONFIRM && (
           <Confirm onCancel={back} onConfirm={trash} message={"Press confirm to remove this interview"}/>
         )}
-        
         
     </article>
   );
