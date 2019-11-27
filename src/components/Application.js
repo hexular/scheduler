@@ -18,7 +18,7 @@ export default function Application() {
     interviewers: {}
   });
 
-  function bookInterview(id, interview) {
+  async function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -27,12 +27,12 @@ export default function Application() {
       ...state.appointments,
       [id]: appointment
     };
-    setState({
-      ...state,
-      appointments
-    });
-    console.log({appointment})
-    axios.put(`/api/appointments/${id}`, {interview});
+    await axios.put(`/api/appointments/${id}`, {interview})
+      .then(() => setState({...state, appointments}))
+  }
+
+  async function cancelInterview(id) {
+    await axios.delete(`/api/appointments/${id}`)
   }
   
   const setDay = day => setState({ ...state, day });
@@ -63,6 +63,7 @@ export default function Application() {
         interview={intervieww}
         interviewers={intervs}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     )
   })
