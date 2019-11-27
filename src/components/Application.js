@@ -19,7 +19,7 @@ export default function Application() {
   });
 
   function bookInterview(id, interview) {
-    console.log(id, interview);
+    // console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -28,6 +28,10 @@ export default function Application() {
       ...state.appointments,
       [id]: appointment
     };
+    setState({
+      ...state,
+      appointments
+    });
   }
   
   const setDay = day => setState({ ...state, day });

@@ -18,7 +18,8 @@ function save(name, interviewer) {
     student: name,
     interviewer
   };
-  props.bookInterview(props.id, interview)
+  props.bookInterview(props.id, interview);
+  transition(SHOW);
 }
 
 const { mode, transition, back } = useVisualMode(
