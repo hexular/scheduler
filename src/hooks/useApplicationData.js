@@ -4,7 +4,7 @@ import axios from "axios";
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
-const SET_SOCKET = "SET_SOCKET";
+// const SET_SOCKET = "SET_SOCKET";
 
 const initialState = {
   day: "Monday",
@@ -47,8 +47,8 @@ function reducer(state, action) {
         if (item.name === state.day) { 
           action.change < 0 ? 
             state.appointments[action.id].interview === null && (item.spots += action.change) : 
-            item.spots += action.change
-        }
+            item.spots += action.change;
+        };
       });
       console.log(state)
       console.log(days)
@@ -67,8 +67,8 @@ function reducer(state, action) {
 export default function useApplicationData() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  async function bookInterview(id, interview) {
+  console.log(state)
+  function bookInterview(id, interview) {
     // const appointment = {
     //   ...state.appointments[id],
     //   interview: { ...interview }
@@ -81,11 +81,11 @@ export default function useApplicationData() {
     //   ...state.days,
     // ];
     // days.forEach(item => item.name === state.day && !state.appointments[id].interview && item.spots--)
-    await axios.put(`/api/appointments/${id}`, {interview})
-      .then(() => dispatch({ type: SET_INTERVIEW, id, change: -1, interview }))
+    return axios.put(`/api/appointments/${id}`, {interview})
+      // .then(() => dispatch({ type: SET_INTERVIEW, id, change: -1, interview }))
   }
 
-  async function cancelInterview(id) {
+  function cancelInterview(id) {
     // const appointment = {
     //   ...state.appointments[id],
     //   interview: null
@@ -99,27 +99,30 @@ export default function useApplicationData() {
     // ];
     // days.forEach(item => item.name === state.day && item.spots++)
     // console.log('days here', days)
-    await axios.delete(`/api/appointments/${id}`)
-      .then(() => dispatch({type: SET_INTERVIEW, id, change: 1, interview: null }))
+    return axios.delete(`/api/appointments/${id}`)
+      // .then(() => dispatch({type: SET_INTERVIEW, id, change: 1, interview: null }))
   }
 
   const setDay = day => dispatch({ type: SET_DAY, day });
 
   useEffect(() => {
 
-    // const socket = new WebSocket('ws://localhost:8001');
-    // socket.addEventListener('open', () => {
-    //   console.log('connected to server');
-    //   socket.send('ping')
-    //   dispatch({ type: "SET_SOCKET", value: socket })
-    // });
+    const socket = new WebSocket('ws://localhost:8001');
+    socket.addEventListener('open', () => {
+      console.log('connected to server');
+      socket.send('ping')
+      // dispatch({ type: "SET_SOCKET", value: socket })
+    });
 
-    // socket.addEventListener("message", msg => {
-    //   // console.log("msg", msg.data);
-    //   const data = JSON.parse(msg.data);
-    //   console.log(data)
-    //   data.type === "SET_INTERVIEW" && dispatch({ ...data, fromRemote: true });
-    // });
+    socket.onmessage = msg => {
+      // console.log("msg", msg.data);
+      const data = JSON.parse(msg.data);
+      console.log(typeof data)
+      typeof data === 'object' &&
+      (data.interview ? data.change = 1 : data.change = -1)
+      console.log(data);
+      data.type === "SET_INTERVIEW" && dispatch({ ...data });
+    };
 
     Promise.all([
       axios.get(`api/days`),
@@ -133,9 +136,9 @@ export default function useApplicationData() {
           interviewers: all[2].data
         })
     })
-    // return () => {
-    //   socket.close();
-    // }
+    return () => {
+      socket.close();
+    }
   }, []);
 
   return {
