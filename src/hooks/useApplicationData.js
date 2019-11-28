@@ -20,8 +20,8 @@ function reducer(state, action) {
     case SET_DAY:
       return { ...state, day: action.day } 
     case SET_INTERVIEW: 
-      console.log(state)
-      state.days.forEach(item => item.name === state.day && console.log(item.spots))
+      // console.log(state)
+      // state.days.forEach(item => item.name === state.day && console.log(item.spots))
       return { ...state, id: action.id, appointments: action.appointments, days: action.days }
     default:
       throw new Error(
