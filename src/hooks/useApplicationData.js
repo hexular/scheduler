@@ -46,7 +46,7 @@ export default function useApplicationData() {
     const days = [
       ...state.days,
     ];
-    days.forEach(item => item.name === state.day && item.spots--)
+    days.forEach(item => item.name === state.day && !state.appointments[id].interview && item.spots--)
     await axios.put(`/api/appointments/${id}`, {interview})
       .then(() => dispatch({ type: SET_INTERVIEW, id, appointments, days }))
   }
@@ -71,6 +71,18 @@ export default function useApplicationData() {
   const setDay = day => dispatch({ type: SET_DAY, day });
 
   useEffect(() => {
+
+    const socket = new WebSocket('ws://localhost:8001');
+    socket.addEventListener('open', () => {
+      console.log('connected to server');
+      socket.send('ping')
+    });
+
+    socket.addEventListener("message", msg => {
+      console.log("msg", msg.data);
+      // const data = JSON.parse(msg.data);
+    });
+
     Promise.all([
       axios.get(`api/days`),
       axios.get(`api/appointments`),
@@ -82,7 +94,10 @@ export default function useApplicationData() {
           appointments: all[1].data, 
           interviewers: all[2].data
         })
-    });
+    })
+    return () => {
+      socket.close();
+    }
   }, []);
 
   return {
