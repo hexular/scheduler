@@ -47,10 +47,12 @@ function edit() {
   transition(EDIT)
 };
 
-const { mode, transition, back } = useVisualMode(
-  props.interview ? SHOW : EMPTY
-);
-  console.log(props)
+const { mode, transition, back } = 
+
+  useVisualMode(
+    props.interview ? SHOW : EMPTY
+  );
+
   return (
     <article className="appointment">
       <Header time={props.time} key={props.id} />

@@ -14,8 +14,6 @@ const initialState = {
 
 function reducer(state, action) {
 
-  // const { day, days, appointments, interviewers, id, interview } = action;
-
   switch (action.type) {
     case SET_APPLICATION_DATA:
       return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
@@ -30,11 +28,12 @@ function reducer(state, action) {
   }
 }
 
+// when an appointment is booked or cancelled, update the day count
+
+
 export default function useApplicationData() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  
 
   async function bookInterview(id, interview) {
     const appointment = {
