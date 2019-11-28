@@ -20,16 +20,15 @@ function reducer(state, action) {
     case SET_DAY:
       return { ...state, day: action.day } 
     case SET_INTERVIEW: 
-      return { ...state, id: action.id, appointments: action.appointments }
+      console.log(state)
+      state.days.forEach(item => item.name === state.day && console.log(item.spots))
+      return { ...state, id: action.id, appointments: action.appointments, days: action.days }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
       );
   }
 }
-
-// when an appointment is booked or cancelled, update the day count
-
 
 export default function useApplicationData() {
 
@@ -44,8 +43,12 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const days = [
+      ...state.days,
+    ];
+    days.forEach(item => item.name === state.day && item.spots--)
     await axios.put(`/api/appointments/${id}`, {interview})
-      .then(() => dispatch({ type: SET_INTERVIEW, id, appointments }))
+      .then(() => dispatch({ type: SET_INTERVIEW, id, appointments, days }))
   }
 
   async function cancelInterview(id) {
@@ -57,8 +60,12 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const days = [
+      ...state.days,
+    ];
+    days.forEach(item => item.name === state.day && item.spots++)
     await axios.delete(`/api/appointments/${id}`)
-      .then(() => dispatch({type: SET_INTERVIEW, id, appointments }))
+      .then(() => dispatch({type: SET_INTERVIEW, id, appointments, days }))
   }
 
   const setDay = day => dispatch({ type: SET_DAY, day });
