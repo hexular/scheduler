@@ -1,10 +1,10 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
+import spotCounter from "../helpers/spotCounter"
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
-// const SET_SOCKET = "SET_SOCKET";
 
 const initialState = {
   day: "Monday",
@@ -15,21 +15,12 @@ const initialState = {
 
 function reducer(state, action) {
 
-  // const sendAppointment = newApp => {
-  //   if (state.socket && !action.fromRemote) {
-  //     state.socket.send(JSON.stringify(newApp));
-  //   }
-  // };
-
   switch (action.type) {
-    // case SET_SOCKET:
-    //   return { ...state, socket: action.value }
     case SET_APPLICATION_DATA:
       return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
     case SET_DAY:
       return { ...state, day: action.day } 
     case SET_INTERVIEW: 
-      // sendAppointment({ id: action.id, appointments: action.appointments, days: action.days })
       const appointment = {
         ...state.appointments[action.id],
         interview: (action.interview ? { ...action.interview } : null)
@@ -38,22 +29,23 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
-      const days = [
-        ...state.days,
-      ];
-      // DO NOT CHANGE item.spots IF INTERVIEW EXISTED ANNDDDDDDD action.change IS < 0 !!!!!!!!!!!!!!
-      console.log(state.appointments[action.id].interview)
-      days.forEach(item => { 
-        if (item.name === state.day) { 
-          action.change < 0 ? 
-            state.appointments[action.id].interview === null && (item.spots += action.change) : 
-            item.spots += action.change;
-        };
-      });
-      console.log(state)
-      console.log(days)
-      state.days.forEach(item => item.name === state.day && console.log(item.spots))
-      return { ...state, id: action.id, appointments: appointments, days: days }
+      spotCounter({ ...state, appointments} , state.days)
+      console.log(action)
+      // const days = [
+      //   ...state.days,
+      // ];
+      // console.log(state.appointments[action.id].interview)
+      // days.forEach(item => { 
+      //   if (item.name === state.day) { 
+      //     action.change < 0 ? 
+      //       state.appointments[action.id].interview === null && (item.spots += action.change) : 
+      //       item.spots += action.change;
+      //   }
+      // });
+      // console.log(state)
+      // console.log(days)
+      // state.days.forEach(item => item.name === state.day && console.log(item.spots))
+      return { ...state, id: action.id, appointments: appointments }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -69,38 +61,11 @@ export default function useApplicationData() {
   const [state, dispatch] = useReducer(reducer, initialState);
   console.log(state)
   function bookInterview(id, interview) {
-    // const appointment = {
-    //   ...state.appointments[id],
-    //   interview: { ...interview }
-    // };
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // };
-    // const days = [
-    //   ...state.days,
-    // ];
-    // days.forEach(item => item.name === state.day && !state.appointments[id].interview && item.spots--)
     return axios.put(`/api/appointments/${id}`, {interview})
-      // .then(() => dispatch({ type: SET_INTERVIEW, id, change: -1, interview }))
   }
 
   function cancelInterview(id) {
-    // const appointment = {
-    //   ...state.appointments[id],
-    //   interview: null
-    // };
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // };
-    // const days = [
-    //   ...state.days,
-    // ];
-    // days.forEach(item => item.name === state.day && item.spots++)
-    // console.log('days here', days)
     return axios.delete(`/api/appointments/${id}`)
-      // .then(() => dispatch({type: SET_INTERVIEW, id, change: 1, interview: null }))
   }
 
   const setDay = day => dispatch({ type: SET_DAY, day });
@@ -118,9 +83,9 @@ export default function useApplicationData() {
       // console.log("msg", msg.data);
       const data = JSON.parse(msg.data);
       console.log(typeof data)
-      typeof data === 'object' &&
-      (data.interview ? data.change = 1 : data.change = -1)
-      console.log(data);
+      // typeof data === 'object' &&
+      // (data.interview === null ? data.change = 1 : data.change = -1)
+      // console.log(data);
       data.type === "SET_INTERVIEW" && dispatch({ ...data });
     };
 
