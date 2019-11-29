@@ -8,6 +8,7 @@ export default function spotCounter(state, days) {
       .map(item => item.interview !== null ? 0 : 1)
       .reduce((total, val) => total + val))
   })
-  return result;
   
+  return result;
+
 }

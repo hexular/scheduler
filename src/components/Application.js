@@ -1,5 +1,4 @@
 import React from "react";
-// import axios from 'axios';
 
 import { getAppointmentsForDay } from "../helpers/selectors.js"
 import { getInterview } from "../helpers/selectors.js"
@@ -8,8 +7,6 @@ import DayList from "components/DayList.js";
 import Appointment from "components/Appointment"
 import { getInterviewersForDay } from "../helpers/selectors";
 import useApplicationData from "../hooks/useApplicationData"
-// import DayListItem from "components/DayListItem.js";
-// import Button from "components/Button.js";
 
 export default function Application() {
 
@@ -20,12 +17,9 @@ export default function Application() {
     cancelInterview
   } = useApplicationData();
 
-  
-
   const intervs = getInterviewersForDay(state, state.day)
   
   const apps = getAppointmentsForDay(state, state.day)
-  
 
   const app = apps.map(appointment => {
     const intervieww = getInterview(state, appointment.interview);
