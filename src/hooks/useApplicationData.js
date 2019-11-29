@@ -29,8 +29,11 @@ function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment
       };
-      spotCounter({ ...state, appointments} , state.days)
-      console.log(action)
+      const newSpots = spotCounter({ ...state, appointments} , state.days)
+      newSpots.map((spot, index) => state.days[index].spots = newSpots[index])
+      // console.log(newState)
+      // for each day's spot map the index of the of the newspots array
+
       // const days = [
       //   ...state.days,
       // ];
