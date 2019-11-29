@@ -43,7 +43,7 @@ function reducer(state, action) {
 export default function useApplicationData() {
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state)
+
   function bookInterview(id, interview) {
     return axios.put(`/api/appointments/${id}`, {interview})
   }
@@ -58,15 +58,19 @@ export default function useApplicationData() {
 
     const socket = new WebSocket('ws://localhost:8001');
     socket.addEventListener('open', () => {
+
       console.log('connected to server');
+
       socket.send('ping')
+
     });
 
     socket.onmessage = msg => {
-      // console.log("msg", msg.data);
+
       const data = JSON.parse(msg.data);
-      console.log(typeof data)
+
       data.type === "SET_INTERVIEW" && dispatch({ ...data });
+
     };
 
     Promise.all([
@@ -81,9 +85,11 @@ export default function useApplicationData() {
           interviewers: all[2].data
         })
     })
+
     return () => {
       socket.close();
     }
+    
   }, []);
 
   return {
