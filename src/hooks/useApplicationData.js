@@ -30,34 +30,15 @@ function reducer(state, action) {
         [action.id]: appointment
       };
       const newSpots = spotCounter({ ...state, appointments} , state.days)
-      newSpots.map((spot, index) => state.days[index].spots = newSpots[index])
-      // console.log(newState)
-      // for each day's spot map the index of the of the newspots array
-
-      // const days = [
-      //   ...state.days,
-      // ];
-      // console.log(state.appointments[action.id].interview)
-      // days.forEach(item => { 
-      //   if (item.name === state.day) { 
-      //     action.change < 0 ? 
-      //       state.appointments[action.id].interview === null && (item.spots += action.change) : 
-      //       item.spots += action.change;
-      //   }
-      // });
-      // console.log(state)
-      // console.log(days)
-      // state.days.forEach(item => item.name === state.day && console.log(item.spots))
+      newSpots.map((spot, index) => state.days[index].spots = spot)
+      
       return { ...state, id: action.id, appointments: appointments }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
       );
-      
   }
 }
-
-// take client recieved object and update appointments using the interview it provides, then dispatch set inteveriew...
 
 export default function useApplicationData() {
 
@@ -79,16 +60,12 @@ export default function useApplicationData() {
     socket.addEventListener('open', () => {
       console.log('connected to server');
       socket.send('ping')
-      // dispatch({ type: "SET_SOCKET", value: socket })
     });
 
     socket.onmessage = msg => {
       // console.log("msg", msg.data);
       const data = JSON.parse(msg.data);
       console.log(typeof data)
-      // typeof data === 'object' &&
-      // (data.interview === null ? data.change = 1 : data.change = -1)
-      // console.log(data);
       data.type === "SET_INTERVIEW" && dispatch({ ...data });
     };
 
