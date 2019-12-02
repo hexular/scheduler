@@ -85,10 +85,8 @@ export default function useApplicationData() {
           interviewers: all[2].data
         })
     })
-
-    return () => {
-      socket.close();
-    }
+    return () => socket.close();
+    
     
   }, []);
 
