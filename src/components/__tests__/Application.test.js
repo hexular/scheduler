@@ -105,7 +105,7 @@ describe("Application", () => {
   })
 
   it("shows the save error when failing to save an appointment", () => {
-    axios.put.mockRejectedValueOnce();
+    
   });
 
   it("shows the save error when failing to save an appointment", async () => {
@@ -123,6 +123,8 @@ describe("Application", () => {
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     fireEvent.click(getByText(appointment, "Save"));
     
+    axios.put.mockRejectedValueOnce();
+
     expect(getByText(appointment, "Saving interview")).toBeInTheDocument();
 
     await expect(getByText(appointment, "Error").toBeInTheDocument());
@@ -141,10 +143,13 @@ describe("Application", () => {
     expect(getByText(appointment, "Press confirm to remove this interview")).toBeInTheDocument();
 
     fireEvent.click(getByText(appointment, "Confirm"));
+
+    axios.put.mockRejectedValueOnce();
     
     await expect(getByText(appointment, "Cancelling interview")).toBeInTheDocument();
 
     await expect(getByText(appointment, "Error").toBeInTheDocument());
+
   });
 
 });

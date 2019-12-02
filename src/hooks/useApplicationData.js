@@ -1,10 +1,14 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import spotCounter from "../helpers/spotCounter"
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW
+} from "../reducers/application.js";
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
+// const SET_DAY = "SET_DAY";
+// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+// const SET_INTERVIEW = "SET_INTERVIEW";
 
 const initialState = {
   day: "Monday",
@@ -13,32 +17,32 @@ const initialState = {
   interviewers: {}
 };
 
-function reducer(state, action) {
+// function reducer(state, action) {
 
-  switch (action.type) {
-    case SET_APPLICATION_DATA:
-      return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
-    case SET_DAY:
-      return { ...state, day: action.day } 
-    case SET_INTERVIEW: 
-      const appointment = {
-        ...state.appointments[action.id],
-        interview: (action.interview ? { ...action.interview } : null)
-      };
-      const appointments = {
-        ...state.appointments,
-        [action.id]: appointment
-      };
-      const newSpots = spotCounter({ ...state, appointments} , state.days)
-      newSpots.map((spot, index) => state.days[index].spots = spot)
+//   switch (action.type) {
+//     case SET_APPLICATION_DATA:
+//       return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
+//     case SET_DAY:
+//       return { ...state, day: action.day } 
+//     case SET_INTERVIEW: 
+//       const appointment = {
+//         ...state.appointments[action.id],
+//         interview: (action.interview ? { ...action.interview } : null)
+//       };
+//       const appointments = {
+//         ...state.appointments,
+//         [action.id]: appointment
+//       };
+//       const newSpots = spotCounter({ ...state, appointments} , state.days)
+//       newSpots.map((spot, index) => state.days[index].spots = spot)
       
-      return { ...state, id: action.id, appointments: appointments }
-    default:
-      throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
-      );
-  }
-}
+//       return { ...state, id: action.id, appointments: appointments }
+//     default:
+//       throw new Error(
+//         `Tried to reduce with unsupported action type: ${action.type}`
+//       );
+//   }
+// }
 
 export default function useApplicationData() {
 
@@ -69,7 +73,7 @@ export default function useApplicationData() {
 
       const data = JSON.parse(msg.data);
 
-      data.type === "SET_INTERVIEW" && dispatch({ ...data });
+      data.type === SET_INTERVIEW && dispatch({ ...data });
 
     };
 
