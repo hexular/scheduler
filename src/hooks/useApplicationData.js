@@ -56,7 +56,7 @@ export default function useApplicationData() {
 
   useEffect(() => {
 
-    const socket = new WebSocket('ws://localhost:8001');
+    const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     socket.addEventListener('open', () => {
 
       console.log('connected to server');
