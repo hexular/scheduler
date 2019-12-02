@@ -82,7 +82,37 @@ describe("Application", () => {
     expect(getByAltText(appointment, "Add")).toBeInTheDocument();
     
     // 8. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
-    // expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+
+    expect(getByText(day, "2 spots remaining")).toBeInTheDocument();
   });
+
+  it("loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
+
+     const { container, debug } = render(<Application />);
+  
+     await waitForElement(() => getByText(container, "Archie Cohen"));
+ 
+     const appointment = getAllByTestId(container, "appointment")[1];
+
+    // 3. Click the "Edit" button on the booked appointment.
+    fireEvent.click(getByAltText(appointment, "Edit"));
+    // 4. Check that the create appointment screen is shown with prefilled fields
+    expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
+    // 5. Click the "Save" button
+    fireEvent.click(getByText(appointment, "Save"));
+    // 6. Check that the element with the text "Saving" is displayed.
+    expect(getByText(appointment, "Saving interview")).toBeInTheDocument();
+    // 7. Wait until the element with the the updated information is displayed.
+    await expect(getByText(appointment, "Archie Cohen")).toBeInTheDocument();
+    // 8. Check that the DayListItem with the text "Monday" also has the text "no spots remaining".
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
+    
+    expect(getByText(day, "no spots remaining")).toBeInTheDocument();
+  })
 
 });
