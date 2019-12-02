@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import '@testing-library/jest-dom/extend-expect'; 
 import {  render, 
           cleanup, 
           waitForElement, 
@@ -8,7 +9,9 @@ import {  render,
           prettyDOM,
           getAllByTestId,
           getByAltText,
-          getByPlaceholderText
+          getByPlaceholderText,
+          getByTestId,
+          queryByText
         } from "@testing-library/react";
 
 import Application from "components/Application";
@@ -27,7 +30,7 @@ describe("Application", () => {
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
-    const { container } = render(<Application />);
+    const { container, debug } = render(<Application />);
   
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
@@ -43,6 +46,15 @@ describe("Application", () => {
     });
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
     fireEvent.click(getByText(appointment, "Save"));
+    
+    expect(getByText(appointment, "Saving interview")).toBeInTheDocument();
+    // expect(getByTestId(appointments[1], "appointment").toHaveValue("Saving"))
+    // await waitForElement(() => queryByText(appointment, "Lydia Miller-Jones"));
+    const day = getAllByTestId(container, "day").find(day =>
+      getByText(queryByText(day, "Monday"), "no appointments remaining").toBeInTheDocument()
+    );
+    
+    console.log(prettyDOM(day));
   });
 
 });
