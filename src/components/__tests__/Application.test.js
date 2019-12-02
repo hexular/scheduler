@@ -48,9 +48,10 @@ describe("Application", () => {
     expect(getByText(appointment, "Saving interview")).toBeInTheDocument();
 
     const day = getAllByTestId(container, "day").find(day =>
-      getByText(queryByText(day, "Monday"), "no appointments remaining").toBeInTheDocument()
+      queryByText(day, "Monday")
     );
     
+    expect(getByText(day, "no spots remaining")).toBeInTheDocument();
   });
 
 });
