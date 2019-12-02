@@ -35,10 +35,8 @@ describe("Application", () => {
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
     const appointments = getAllByTestId(container, "appointment");
-    // console.log(prettyDOM(appointments));
+
     const appointment = getAllByTestId(container, "appointment")[0];
-    // console.log(prettyDOM(container));
-    // console.log('first app', prettyDOM(appointment));
 
     fireEvent.click(getByAltText(appointment, "Add"));
     fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
@@ -48,13 +46,11 @@ describe("Application", () => {
     fireEvent.click(getByText(appointment, "Save"));
     
     expect(getByText(appointment, "Saving interview")).toBeInTheDocument();
-    // expect(getByTestId(appointments[1], "appointment").toHaveValue("Saving"))
-    // await waitForElement(() => queryByText(appointment, "Lydia Miller-Jones"));
+
     const day = getAllByTestId(container, "day").find(day =>
       getByText(queryByText(day, "Monday"), "no appointments remaining").toBeInTheDocument()
     );
     
-    console.log(prettyDOM(day));
   });
 
 });
