@@ -19,6 +19,22 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
+deploy:
+  machine:
+    enabled: true
+
+  working_directory: ~/client
+
+  steps:
+    - add_ssh_keys:
+        fingerprints:
+          - "a2:91:ba:70:1e:6d:30:ee:38:b8:4c:f1:4e:df:8b:61"
+    - checkout
+    - run:
+        name: Push Master to Production
+        command: |
+          git push https://github.com/hexular/scheduler.git master:production
+
 workflows:
   version: 2
   test:
