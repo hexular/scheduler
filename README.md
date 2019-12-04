@@ -14,17 +14,17 @@ Please allow up to 10 seconds for the Heroku database to wake up from standby an
 
 ## 📸 Snapshots 
 
-Add a new interview
+### Add a new interview
 
 !["Adding an interview"](https://i.imgur.com/dH1DFRR.gif)
 
 _____
-Delete an interview
+### Delete an interview
 
 !["Deleting an interview"](https://i.imgur.com/ZRst6yz.gif)
 
 _____
-Select different days
+### Select different days
 
 !["Changing days"](https://i.imgur.com/Pi3xGnX.gif)
 
