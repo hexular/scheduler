@@ -6,10 +6,6 @@ import reducer, {
   SET_INTERVIEW
 } from "../reducers/application.js";
 
-// const SET_DAY = "SET_DAY";
-// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-// const SET_INTERVIEW = "SET_INTERVIEW";
-
 const initialState = {
   day: "Monday",
   days: [],
@@ -17,32 +13,9 @@ const initialState = {
   interviewers: {}
 };
 
-// function reducer(state, action) {
-
-//   switch (action.type) {
-//     case SET_APPLICATION_DATA:
-//       return { ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers }
-//     case SET_DAY:
-//       return { ...state, day: action.day } 
-//     case SET_INTERVIEW: 
-//       const appointment = {
-//         ...state.appointments[action.id],
-//         interview: (action.interview ? { ...action.interview } : null)
-//       };
-//       const appointments = {
-//         ...state.appointments,
-//         [action.id]: appointment
-//       };
-//       const newSpots = spotCounter({ ...state, appointments} , state.days)
-//       newSpots.map((spot, index) => state.days[index].spots = spot)
-      
-//       return { ...state, id: action.id, appointments: appointments }
-//     default:
-//       throw new Error(
-//         `Tried to reduce with unsupported action type: ${action.type}`
-//       );
-//   }
-// }
+// this function is responsible for all api calls and setting the state given data from api calls or socket connections
+// the function has been set up to connect to the server via a websocket connection, and upon recieving data from the server
+// send it to the reducer to be rendered locally
 
 export default function useApplicationData() {
 
@@ -62,19 +35,13 @@ export default function useApplicationData() {
 
     const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
     socket.addEventListener('open', () => {
-
       console.log('connected to server');
-
       socket.send('ping')
-
     });
 
     socket.onmessage = msg => {
-
       const data = JSON.parse(msg.data);
-
       data.type === SET_INTERVIEW && dispatch({ ...data });
-
     };
 
     Promise.all([
@@ -89,8 +56,8 @@ export default function useApplicationData() {
           interviewers: all[2].data
         })
     })
+
     return () => socket.close();
-    
     
   }, []);
 

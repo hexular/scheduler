@@ -6,6 +6,10 @@ export function getInterview(state, interview) {
   return result;
 }
 
+// the following function has been refactored from two very similar functions - 'getInterviewersForDay' and 'getAppointmentsForDay'
+// now, by feeding an info string whenever this function is called, it has been made to be more modularized
+// given a day, it returns either the interviewers array of objects or appointments array of objects for that given day
+
 export function getInfoForDay(state, day, info) {
   let result = [];
   const findDay = () => state.days.filter(i => i.name === day)
