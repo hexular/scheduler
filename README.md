@@ -1,23 +1,17 @@
 # Interview Scheduler
 
+## Overview 🔎
+
+Interview Scheduler is a small app built in React that allows a user to book, edit and cancel interviews. Using Web Sockets, concurrent users can see changes updated instantaneously. 
+
+The database of the app has been uploaded using Heroku, while the client side has been set up for continuous integration through CircleCI, which uploads the production build to Netlify.
+
+To see and interact with the app, simply visit the following link:
+
+https://5de6c763d46ef00007b351aa--flamboyant-kirch-ec7525.netlify.com/
+
+Please allow up to 10 seconds for the Heroku database to wake up from stanby and render the page with information.
+
 ## Setup
 
-Install dependencies with `npm install`.
-
-## Running Webpack Development Server
-
-```sh
-npm start
-```
-
-## Running Jest Test Framework
-
-```sh
-npm test
-```
-
-## Running Storybook Visual Testbed
-
-```sh
-npm run storybook
-```
+To play around with and edit the code, clone to a local folder and install dependencies with `npm install`.
