@@ -10,6 +10,7 @@ export const SET_INTERVIEW = "SET_INTERVIEW";
 // once new data to be rendered is recived, the spots for each day are calculated based on the new appointments state
 // while it may seem inefficient to recalculate every single day's spots, it ensures that if two concurrent clients are looking at two different days
 // the spots will be updated for the days they are not looking at as well
+// the new state is then defined by incorporating the new spots remaining
 
 export default function reducer(state, action) {
 

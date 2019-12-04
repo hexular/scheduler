@@ -7,19 +7,23 @@ import Form from "components/Appointment/Form";
 import Error from "components/Appointment/Error";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
-import useVisualMode from "../../hooks/useVisualMode"
+import useVisualMode from "../../hooks/useVisualMode";
 
 export default function Appointment(props) {
 
-const SAVING = "SAVING";
-const EMPTY = "EMPTY";
-const SHOW = "SHOW";
-const CREATE = "CREATE";
-const DELETING = "DELETING";
-const CONFIRM = 'CONFIRM';
 const EDIT = 'EDIT';
+const SHOW = "SHOW";
+const EMPTY = "EMPTY";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
+const CONFIRM = 'CONFIRM';
+const DELETING = "DELETING";
 const ERROR_SAVE = 'ERROR_SAVE';
 const ERROR_DELETE = 'ERROR_DELETE';
+
+// this file is responsible for render transitions based on user actions
+// every user interaction is handled by the functions and the useEffect hook of this file
+// it is also responsible for passing the appropriate props to each component
 
 function save(name, interviewer) {
   const interview = {
@@ -79,9 +83,7 @@ const { mode, transition, back } =
 
         {mode === CREATE && (
           <Form 
-            // name={props.interview.student}
             interviewers={props.interviewers}
-            // interviewer={props.interview.interviewer}
             onCancel={back}
             onSave={save}
           />)
