@@ -18,4 +18,6 @@ To play around with and edit the code, clone to a local folder and install depen
 
 ## 📸 Snapshots 
 
-!["Adding an interview"](https://imgur.com/a/4Pt8BCo)
+!["Adding an interview"](https://i.imgur.com/dH1DFRR.gif)
+!["Deleting an interview"](https://i.imgur.com/ZRst6yz.gif)
+!["Changing days"](https://i.imgur.com/Pi3xGnX.gif)
