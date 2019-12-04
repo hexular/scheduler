@@ -27,7 +27,7 @@ _____
 ### Select different days
 
 !["Changing days"](https://i.imgur.com/Pi3xGnX.gif)
-
+_____
 
 ## 🛠 Setup
 
