@@ -1,11 +1,10 @@
 import React from "react";
 
-import { getAppointmentsForDay } from "../helpers/selectors.js"
+import { getInfoForDay } from "../helpers/selectors.js"
 import { getInterview } from "../helpers/selectors.js"
 import "components/Application.scss";
 import DayList from "components/DayList.js";
 import Appointment from "components/Appointment"
-import { getInterviewersForDay } from "../helpers/selectors";
 import useApplicationData from "../hooks/useApplicationData"
 
 export default function Application() {
@@ -17,9 +16,9 @@ export default function Application() {
     cancelInterview
   } = useApplicationData();
 
-  const intervs = getInterviewersForDay(state, state.day)
+  const intervs = getInfoForDay(state, state.day, 'interviewers')
   
-  const apps = getAppointmentsForDay(state, state.day)
+  const apps = getInfoForDay(state, state.day, 'appointments')
 
   const app = apps.map(appointment => {
     const intervieww = getInterview(state, appointment.interview);
